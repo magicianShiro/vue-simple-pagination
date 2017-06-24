@@ -1,5 +1,5 @@
 <template>
-	<div>{{a}}</div>
+	<ms-pagination></ms-pagination>
 </template>
 <script>
 	export default {
