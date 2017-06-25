@@ -13,12 +13,12 @@
         @click="isSelected=!isSelected">
         <input type="text"
           readonly
-          v-model="pageSize">
+          v-model="currentPage">
         <i class="el-icon-arrow-down"></i>
         <transition name="el-zoom-in-top">
          <ul :style="pageSizeList" v-if="isSelected">
             <li
-              :class="{'active': pageSize===index+1}"
+              :class="{'active': currentPage===index+1}"
               v-for="(page, index) in '_'.repeat(pageTotal)"
               @click="select_page(index+1)">{{index+1}}</li>
          </ul>
@@ -36,16 +36,24 @@
   export default {
     name: 'Pagination',
     props: {
+      page: {
+        type: Number,
+        default: 1
+      },
+      pageSize: {
+        type: Number,
+        default: 5
+      },
       pageTotal: {
         type: Number,
         default: 10
-      }
+      },
     },
     data () {
       return {
-        pageSize: 1,
+        currentPage: this.page,
         pageSizeList: {
-          height: 5*30+'px'
+          height: 5*30 + 7 +'px'
         },
         isSelected: false
       }
@@ -53,19 +61,19 @@
     methods: {
       // 选择页数
       select_page (page) {
-        this.pageSize = page
+        this.currentPage = page
       },
       // 选择上一页
       select_nextPage () {
-        this.pageSize >= this.pageTotal ? this.pageTotal : this.pageSize++
+        this.currentPage >= this.pageTotal ? this.pageTotal : this.currentPage++
       },
       // 选择下一页
       select_prevPage () {
-        this.pageSize <= 1 ? 1 : this.pageSize--
+        this.currentPage <= 1 ? 1 : this.currentPage--
       }
     },
     watch: {
-      pageSize (newVal, oldValue) {
+      currentPage (newVal, oldValue) {
         this.$emit('current-change', newVal)
       }
     },
@@ -157,6 +165,7 @@
         box-shadow: 0px 0px 5px rgba(255,255,255,.5);
         padding: 5px 0;
         overflow-y: auto;
+        box-sizing: border-box;
         li {
           height: 30px;
           line-height: 30px;

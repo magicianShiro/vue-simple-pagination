@@ -1,5 +1,5 @@
 <template>
-	<ms-pagination :pageTotal="20"></ms-pagination>
+	<ms-pagination theme="select" :pageTotal="20"></ms-pagination>
 </template>
 <script>
 	export default {
