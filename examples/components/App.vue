@@ -1,6 +1,7 @@
 <template>
 	<ms-pagination 
 		:totalPage="100"
+		:fast="true"
 		@current-change="currentChange"></ms-pagination>
 </template>
 <script>

@@ -27,9 +27,11 @@
         @mouseenter="rightArrow=!rightArrow"
         @mouseleave="rightArrow=!rightArrow"
         @click="fastForward">
-          <i :class="[
-            {'el-icon-more': rightArrow},
-            {'el-icon-d-arrow-right': !rightArrow}
+          <i 
+            class="iconfont"
+            :class="[
+            {'icon-more': rightArrow},
+            {'icon-arrow-right': !rightArrow}
           ]"></i>
       </li>
       <li 
@@ -38,9 +40,11 @@
         @mouseenter="leftArrow=!leftArrow"
         @mouseleave="leftArrow=!leftArrow"
         @click="fastBackward">
-          <i :class="[
-            {'el-icon-more': leftArrow},
-            {'el-icon-d-arrow-left': !leftArrow}
+          <i
+            class="iconfont"
+            :class="[
+            {'icon-more': leftArrow},
+            {'icon-arrow-left': !leftArrow}
           ]"></i>
       </li>
     </ul>
