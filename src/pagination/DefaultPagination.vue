@@ -13,9 +13,10 @@
     <ul class="lf">
       <li
         class="lf"
-        :class="{'active': index+1 === currentPage}"
-        v-for="(pageItem, index) in '_'.repeat(pageTotal)">
-        {{index+1}}</li>
+        :class="{'active': pageItem === currentPage}"
+        v-for="(pageItem, index) in visiblePageArr">
+        {{pageItem}}</li>
+      <!-- <li v-else class="lf">asdf</li> -->
     </ul>
     <div class="lf next">
       <p
@@ -44,11 +45,19 @@
       pageSize: {
         type: Number,
         default: 10
+      },
+      visiblePages: {
+        type: Number,
+        default: 7
+      },
+      quick: {
+        type: Boolean,
+        default: true
       }
     },
     data () {
       return {
-        currentPage: 1
+        currentPage: this.page
       }
     },
     methods: {
@@ -65,6 +74,26 @@
         this.currentPage = this.pageTotal
       }
     },
+    watch: {
+      currentPage (newVal, oldValue) {
+        this.$emit('current-change', newVal)
+      }
+    },
+    computed: {
+      visiblePageArr () {
+        // 这里的 4 可以当成配置项
+        // 表情从第几项开始 页面开始移动
+        let start = this.currentPage - 4 <= 0 ? 0 : this.currentPage - 4
+        start = start + this.visiblePages > this.pageTotal ? this.pageTotal - this.visiblePages : start
+        let end = start + this.visiblePages > this.pageTotal ? this.pageTotal : start + this.visiblePages
+
+        let arr = []
+        for(let i=0; i<this.pageTotal; i++){
+          arr.push(i+1)
+        }
+        return arr.slice(start, end)
+      }
+    }
   }
 </script>
 

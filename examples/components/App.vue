@@ -1,11 +1,11 @@
 <template>
-	<ms-pagination></ms-pagination>
+	<ms-pagination :pageTotal="20"></ms-pagination>
 </template>
 <script>
 	export default {
 		data () {
 			return {
-				a: '123456'
+				
 			}
 		}
 	}
