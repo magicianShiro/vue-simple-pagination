@@ -2,7 +2,7 @@
   <div id="pagination">
     <div class="wrap clearfix">
       <input
-        :disabled="1 === pageSize"
+        :disabled="1 === currentPage"
         type="button"
         class="btn prev lf"
         @click="select_prevPage" value="上一页"></input>
@@ -18,14 +18,14 @@
         <transition name="el-zoom-in-top">
          <ul :style="pageSizeList" v-if="isSelected">
             <li
-              :class="{'active': currentPage===index+1}"
-              v-for="(page, index) in '_'.repeat(pageTotal)"
-              @click="select_page(index+1)">{{index+1}}</li>
+              :class="{'active': currentPage===pageItem}"
+              v-for="(pageItem, index) in visiblePageArr"
+              @click="select_page(pageItem)">{{pageItem}}</li>
          </ul>
         </transition>
       </div>
       <input
-        :disabled="pageTotal === pageSize"
+        :disabled="_totalPage === currentPage"
         type="button"
         class="btn next lf"
         @click="select_nextPage" value="下一页"></span>
@@ -34,26 +34,13 @@
 </template>
 <script>
   export default {
-    name: 'Pagination',
-    props: {
-      page: {
-        type: Number,
-        default: 1
-      },
-      pageSize: {
-        type: Number,
-        default: 5
-      },
-      pageTotal: {
-        type: Number,
-        default: 10
-      },
-    },
+    name: 'SelectPagination',
+    props: ['page', 'totalPage', 'pageSize', 'pageCount', 'visiblePages'],
     data () {
       return {
         currentPage: this.page,
         pageSizeList: {
-          height: 5*30 + 7 +'px'
+          height: this.visiblePages*30 + 7 +'px'
         },
         isSelected: false
       }
@@ -65,7 +52,7 @@
       },
       // 选择上一页
       select_nextPage () {
-        this.currentPage >= this.pageTotal ? this.pageTotal : this.currentPage++
+        this.currentPage >= this._totalPage ? this._totalPage : this.currentPage++
       },
       // 选择下一页
       select_prevPage () {
@@ -76,6 +63,25 @@
       currentPage (newVal, oldValue) {
         this.$emit('current-change', newVal)
       }
+    },
+    computed: {
+      visiblePageArr () {
+        console.log(this._totalPage)
+        let arr =[]
+        for(let i=0; i<this._totalPage; i++){
+          arr.push(i+1)
+        }
+        console.log(arr)
+        return arr
+      },
+      _totalPage () {
+        if(this.pageSize && this.pageCount)
+          return Math.ceil(this.pageCount / this.pageSize)
+        else if (this.totalPage)
+          return this.totalPage
+        else 
+          throw new Error('参数不正确')
+      },
     },
     mounted () {
       let doc = document.documentElement || document.body

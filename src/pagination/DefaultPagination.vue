@@ -2,65 +2,77 @@
   <div id="clickPagination">
     <div class="lf prev">
       <p
+        v-if="!fast"
         class="lf firstBtn"
         :class="{'disabled': currentPage === 1}"
-        @click.stop="first_page">First</p>
+        @click.stop="first_page">{{_btnText.first}}</p>
       <p
         class="lf prevBtn"
         :class="{'disabled': currentPage === 1}"
-        @click.stop="prev_page">Previous</p>
+        @click.stop="prev_page">{{_btnText.prev}}</p>
     </div>
     <ul class="lf">
       <li
         class="lf"
+        v-if="pageItem !== 'right' && pageItem !== 'left'"
         :class="{'active': pageItem === currentPage}"
-        v-for="(pageItem, index) in visiblePageArr">
+        v-for="(pageItem, index) in visiblePageArr"
+        @mouseenter="rightArrow=leftArrow=true"
+        @mouseleave="rightArrow=leftArrow=true"
+        @click="changePage(pageItem)">
         {{pageItem}}</li>
-      <!-- <li v-else class="lf">asdf</li> -->
+      <li 
+        class="lf" 
+        v-else-if="pageItem === 'right'"
+        @mouseenter="rightArrow=!rightArrow"
+        @mouseleave="rightArrow=!rightArrow"
+        @click="fastForward">
+          <i :class="[
+            {'el-icon-more': rightArrow},
+            {'el-icon-d-arrow-right': !rightArrow}
+          ]"></i>
+      </li>
+      <li 
+        class="lf" 
+        v-else-if="pageItem === 'left'"
+        @mouseenter="leftArrow=!leftArrow"
+        @mouseleave="leftArrow=!leftArrow"
+        @click="fastBackward">
+          <i :class="[
+            {'el-icon-more': leftArrow},
+            {'el-icon-d-arrow-left': !leftArrow}
+          ]"></i>
+      </li>
     </ul>
     <div class="lf next">
       <p
         class="lf nextBtn"
-        :class="{'disabled': currentPage === pageTotal}"
-        @click.stop="next_page">Next</p>
+        :class="{'disabled': currentPage === _totalPage}"
+        @click.stop="next_page">{{_btnText.next}}</p>
       <p
+        v-if="!fast"
         class="lf lastBtn"
-        :class="{'disabled': currentPage === pageTotal}"
-        @click.stop="last_page">Last</p>
+        :class="{'disabled': currentPage === _totalPage}"
+        @click.stop="last_page">{{_btnText.last}}</p>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    props: {
-      page: {
-        type: Number,
-        default: 1
-      },
-      pageTotal: {
-        type: Number,
-        default: 0
-      },
-      pageSize: {
-        type: Number,
-        default: 10
-      },
-      visiblePages: {
-        type: Number,
-        default: 7
-      },
-      quick: {
-        type: Boolean,
-        default: true
-      }
-    },
+    name: 'DefaultPagination',
+    props: ['page', 'basePage', 'totalPage', 'pageSize', 'pageCount', 'visiblePages', 'fast', 'fastStep', 'btnText'],
     data () {
       return {
-        currentPage: this.page
+        currentPage: this.page,
+        rightArrow: true,
+        leftArrow: true
       }
     },
     methods: {
+      changePage (page) {
+        this.currentPage = page
+      },
       prev_page () {
         this.currentPage === 1 ? 1 : this.currentPage--
       },
@@ -68,10 +80,22 @@
         this.currentPage = 1
       },
       next_page () {
-        this.currentPage === this.pageTotal ? this.currentPage = this.pageTotal : this.currentPage++
+        this.currentPage === this._totalPage ? this.currentPage = this._totalPage : this.currentPage++
       },
       last_page (){
-        this.currentPage = this.pageTotal
+        this.currentPage = this._totalPage
+      },
+      fastForward () {
+        let step = this.currentPage + this.fastStep
+        if(step > this._totalPage)
+          this.leftArrow = this.rightArrow = true
+        this.currentPage = step > this._totalPage ? this._totalPage : step
+      },
+      fastBackward () {
+        let step = this.currentPage - this.fastStep
+        if(step < 1 )
+          this.leftArrow = this.rightArrow = true
+        this.currentPage = step < 1 ? 1 : step
       }
     },
     watch: {
@@ -81,17 +105,40 @@
     },
     computed: {
       visiblePageArr () {
-        // 这里的 4 可以当成配置项
-        // 表情从第几项开始 页面开始移动
-        let start = this.currentPage - 4 <= 0 ? 0 : this.currentPage - 4
-        start = start + this.visiblePages > this.pageTotal ? this.pageTotal - this.visiblePages : start
-        let end = start + this.visiblePages > this.pageTotal ? this.pageTotal : start + this.visiblePages
-
+        let start = this.currentPage - this.basePage <= 0 ? 0 : this.currentPage - this.basePage
+        start = start + this.visiblePages > this._totalPage ? this._totalPage - this.visiblePages : start
+        let end = start + this.visiblePages > this._totalPage ? this._totalPage : start + this.visiblePages
         let arr = []
-        for(let i=0; i<this.pageTotal; i++){
+        for(let i=0; i<this._totalPage; i++){
           arr.push(i+1)
         }
-        return arr.slice(start, end)
+        let newArr = arr.slice(start, end)
+        
+        if(end !== this._totalPage && this.fast){
+          newArr.splice(this.visiblePages, 0, "right")
+          newArr.splice(this.visiblePages+1, 0 , this._totalPage)
+        }
+        if(start > 0 && this.fast){
+          newArr.splice(0, 0, 'left')
+          newArr.splice(0, 0, 1)
+        }
+        return newArr
+      },
+      _totalPage () {
+        if(this.pageSize && this.pageCount)
+          return Math.ceil(this.pageCount / this.pageSize)
+        else if (this.totalPage)
+          return this.totalPage
+        else 
+          throw new Error('参数不正确')
+      },
+      _btnText () {
+        return Object.assign({
+          first: 'First',
+          prev: 'Previous',
+          next: 'Next',
+          last: 'Last'
+        }, this.btnText)
       }
     }
   }
@@ -116,7 +163,6 @@
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;
-    margin: 100px;
     &>div{
       p {
         .btnStyle;
@@ -151,11 +197,18 @@
         &+li {
           border-left: none;
         }
-        &.active{
+        &.active {
           color: #fff;
           background-color: #337ab7;
           border-color: #337ab7;
         }
+        // &.rightArrow {
+        //   &:hover {
+        //     color: #337ab7;
+        //     background-color: #fff;
+        //     // border-color: #337ab7;
+        //   }
+        // }
       }
     }
   }

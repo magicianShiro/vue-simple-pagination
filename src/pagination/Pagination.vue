@@ -2,12 +2,24 @@
 
   <ms-selectPagination
     v-if="theme==='select'"
-    :pageTotal="pageTotal"
+    :page="page"
+    :totalPage="totalPage"
+    :pageSize="pageSize"
+    :pageCount="pageCount"
+    :visiblePages="visiblePages"
     @current-change="current_change">
   </ms-selectPagination>
   <ms-defaultPagination
     v-else-if="theme==='default'"
-    :pageTotal="pageTotal"
+    :page="page"
+    :basePage="basePage"
+    :totalPage="totalPage"
+    :pageSize="pageSize"
+    :pageCount="pageCount"
+    :visiblePages="visiblePages"
+    :fast="fast"
+    :fastStep="fastStep"
+    :btnText="btnText"
     @current-change="current_change">
   </ms-defaultPagination>
 </template>
@@ -21,9 +33,48 @@
         type: String,
         default: 'default'
       },
-      pageTotal: {
+      page: {
         type: Number,
-        default: 10
+        default: 1
+      },
+      basePage: {
+        type: Number,
+        default: 4
+      },
+      totalPage: {
+        type: Number,
+        default: 0
+      },
+      pageSize: {
+        type: Number,
+        default: 0
+      },
+      pageCount: {
+        type: Number,
+        default: 0
+      },
+      visiblePages: {
+        type: Number,
+        default: 5
+      },
+      fast: {
+        type: Boolean,
+        default: false
+      },
+      fastStep: {
+        type: Number,
+        default: 5
+      },
+      btnText: {
+        type: Object,
+        default: _ => {
+          return {
+            first: 'First',
+            prev: 'Previous',
+            next: 'Next',
+            last: 'Last'
+          }
+        }
       }
     },
     data () {
@@ -32,7 +83,15 @@
     methods: {
       current_change (currentPage) {
         this.$emit('current-change', currentPage)
-      }
+      },
+      // btnTextOption () {
+      //   return {
+      //     first: 'First',
+      //     previous: 'Previous',
+      //     next: 'Next',
+      //     last: 'Last'
+      //   }
+      // }
     },
     components: {
       'ms-selectPagination': SelectPagination,
