@@ -113,10 +113,11 @@
         start = start + this.visiblePages > this._totalPage ? this._totalPage - this.visiblePages : start
         let end = start + this.visiblePages > this._totalPage ? this._totalPage : start + this.visiblePages
         let arr = []
+        let newArr = []
         for(let i=0; i<this._totalPage; i++){
           arr.push(i+1)
         }
-        let newArr = arr.slice(start, end)
+        newArr = arr.slice(start, end)
         
         if(end !== this._totalPage && this.fast){
           newArr.splice(this.visiblePages, 0, "right")

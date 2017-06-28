@@ -1,7 +1,9 @@
 <template>
 	<ms-pagination 
+		theme="select"
 		:totalPage="100"
 		:fast="true"
+		:visiblePages="10"
 		@current-change="currentChange"></ms-pagination>
 </template>
 <script>

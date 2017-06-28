@@ -14,12 +14,17 @@
         <input type="text"
           readonly
           v-model="currentPage">
-        <i class="el-icon-arrow-down"></i>
-        <transition name="el-zoom-in-top">
-         <ul :style="pageSizeList" v-if="isSelected">
+        <i class="iconfont icon-unfold"></i>
+        <transition name="ms-zoom-in-top">
+         <ul :style="pageSizeList" v-show="isSelected">
             <li
-              :class="{'active': currentPage===pageItem}"
+              :class="[
+                {'active': currentPage===pageItem},
+                {'hover': hover === pageItem}
+              ]"
               v-for="(pageItem, index) in visiblePageArr"
+              @mouseenter="mouseenter(pageItem)"
+              @mouseleave="mouseleave(pageItem)"
               @click="select_page(pageItem)">{{pageItem}}</li>
          </ul>
         </transition>
@@ -42,7 +47,8 @@
         pageSizeList: {
           height: this.visiblePages*30 + 7 +'px'
         },
-        isSelected: false
+        isSelected: false,
+        hover: 0
       }
     },
     methods: {
@@ -57,6 +63,12 @@
       // 选择下一页
       select_prevPage () {
         this.currentPage <= 1 ? 1 : this.currentPage--
+      },
+      mouseenter (page) {
+        this.hover = page
+      },
+      mouseleave (page) {
+        this.hover = 0
       }
     },
     watch: {
@@ -66,12 +78,10 @@
     },
     computed: {
       visiblePageArr () {
-        console.log(this._totalPage)
         let arr =[]
         for(let i=0; i<this._totalPage; i++){
           arr.push(i+1)
         }
-        console.log(arr)
         return arr
       },
       _totalPage () {
@@ -86,8 +96,12 @@
     mounted () {
       let doc = document.documentElement || document.body
       let drap = document.getElementById('drap')
+      
       doc.onclick = () => {
         this.isSelected=false
+      }
+      drap.ondragstart = function(e){
+        return false;
       }
       drap.onclick = e => e.stopPropagation()
 
@@ -96,21 +110,6 @@
 </script>
 
 <style scoped lang="less">
-  /* 浮动以及清除浮动 */
-  .lf {
-    float: left;
-  }
-  .rf {
-    float: right;
-  }
-  .clearfix:after{
-    content: '';
-    display: block;
-    clear: both;
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
-  }
   #pagination {
     color: #fff;
     .wrap {
@@ -155,15 +154,17 @@
       // icon样式
       i {
         position: absolute;
-        top: 11px;
+        top: 8px;
         right: 10px;
         width: 12px;
         height: 12px;
         font-size: 12px;
         color: #333;
-        transition: all .5s;
+        transition: all .4s;
+        z-index:101;
       }
       ul {
+        position: relative;
         margin-top: 5px;
         background-color: #fff;
         color: #333;
@@ -178,7 +179,7 @@
           padding-left: 10px;
           text-align: left;
           cursor: pointer;
-          &:hover {
+          &.hover {
             background-color: #e4e8f1;
           }
           &.active{
@@ -192,6 +193,23 @@
           transform: rotateZ(180deg);
         }
       }
+    }
+    .ms-zoom-in-top-enter-active,
+    .ms-zoom-in-top-leave-active {
+      opacity: 1;
+      -ms-transform: scaleY(1);
+      transform: scaleY(1);
+      transition: transform .3s cubic-bezier(.23, 1, .32, 1) .1s, opacity .3s cubic-bezier(.23, 1, .32, 1) .1s;
+      -ms-transform-origin: center top;
+      transform-origin: center top;
+      z-index: 110;
+    }
+
+    .ms-zoom-in-top-enter,
+    .ms-zoom-in-top-leave-active {
+      opacity: 0;
+      -ms-transform: scaleY(0);
+      transform: scaleY(0);
     }
   }
 </style>
