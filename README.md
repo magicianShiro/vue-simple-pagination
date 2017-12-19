@@ -17,7 +17,7 @@ Vue.use(Pagination)
 
   ``` vue
 <template>
-	<ms-pagination :pageTotal="100"></ms-pagination>
+	<ms-pagination :totalPage="100"></ms-pagination>
 </template>
   ```
 
