@@ -28,8 +28,8 @@ module.exports = {
 				loader: 'less-loder'
 			},
 			{
-				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-				loader: 'url-loader',
+				test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
+				loader: 'url-loader'
 		
 			}
 		],
