@@ -21,21 +21,21 @@
         @mouseleave="rightArrow=leftArrow=true"
         @click="changePage(pageItem)">
         {{pageItem}}</li>
-      <li 
-        class="lf" 
+      <li
+        class="lf"
         v-else-if="pageItem === 'right'"
         @mouseenter="rightArrow=!rightArrow"
         @mouseleave="rightArrow=!rightArrow"
         @click="fastForward">
-          <i 
+          <i
             class="iconfont"
             :class="[
             {'icon-more': rightArrow},
             {'icon-arrow-right': !rightArrow}
           ]"></i>
       </li>
-      <li 
-        class="lf" 
+      <li
+        class="lf"
         v-else-if="pageItem === 'left'"
         @mouseenter="leftArrow=!leftArrow"
         @mouseleave="leftArrow=!leftArrow"
@@ -118,7 +118,7 @@
           arr.push(i+1)
         }
         newArr = arr.slice(start, end)
-        
+
         if(end !== this._totalPage && this.fast){
           newArr.splice(this.visiblePages, 0, "right")
           newArr.splice(this.visiblePages+1, 0 , this._totalPage)
@@ -134,7 +134,7 @@
           return Math.ceil(this.pageCount / this.pageSize)
         else if (this.totalPage)
           return this.totalPage
-        else 
+        else
           throw new Error('参数不正确')
       },
       _btnText () {

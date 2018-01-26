@@ -1,8 +1,10 @@
 <template>
-	<ms-pagination 
-		theme="select"
+	<ms-pagination
+		theme="default"
+		:page="3"
 		:totalPage="100"
 		:fast="true"
+		:basePage="5"
 		:visiblePages="10"
 		@current-change="currentChange"></ms-pagination>
 </template>

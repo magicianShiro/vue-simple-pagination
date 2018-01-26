@@ -6,10 +6,10 @@
         type="button"
         class="btn prev lf"
         @click="select_prevPage" value="上一页"></input>
-      <div 
-        id="drap" 
-        class="pagesize lf" 
-        :class="{selected: isSelected}" 
+      <div
+        id="drap"
+        class="pagesize lf"
+        :class="{selected: isSelected}"
         @click="isSelected=!isSelected">
         <input type="text"
           readonly
@@ -33,7 +33,7 @@
         :disabled="_totalPage === currentPage"
         type="button"
         class="btn next lf"
-        @click="select_nextPage" value="下一页"></span>
+        @click="select_nextPage" value="下一页">
     </div>
   </div>
 </template>
@@ -89,14 +89,14 @@
           return Math.ceil(this.pageCount / this.pageSize)
         else if (this.totalPage)
           return this.totalPage
-        else 
+        else
           throw new Error('参数不正确')
       },
     },
     mounted () {
       let doc = document.documentElement || document.body
       let drap = document.getElementById('drap')
-      
+
       doc.onclick = () => {
         this.isSelected=false
       }
