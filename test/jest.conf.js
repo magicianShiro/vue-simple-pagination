@@ -8,6 +8,7 @@ module.exports = {
         'vue'
     ],
     moduleNameMapper: {
+        "\\.(css|less|scss)$": "<rootDir>/test/styleMock.js",
         '^@/(.*)$': '<rootDir>/src/$1'
     },
     transform: {
