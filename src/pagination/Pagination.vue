@@ -1,7 +1,7 @@
 <template>
-
   <ms-selectPagination
     v-if="theme==='select'"
+    class="ms-pagination"
     :page="page"
     :totalPage="totalPage"
     :pageSize="pageSize"
@@ -11,6 +11,7 @@
   </ms-selectPagination>
   <ms-defaultPagination
     v-else-if="theme==='default'"
+    class="ms-pagination"
     :page="page"
     :basePage="basePage"
     :totalPage="totalPage"
@@ -25,12 +26,10 @@
 </template>
 
 <script>
-  import '@/assets/css/main.css'
-  import '@/assets/css/iconfont.css'
   import SelectPagination from './SelectPagination.vue'
   import DefaultPagination from './DefaultPagination.vue'
   export default {
-    name: 'Pagination',
+    name: 'ms-pagination',
     props: {
       theme: {
         type: String,
@@ -91,6 +90,9 @@
     components: {
       'ms-selectPagination': SelectPagination,
       'ms-defaultPagination': DefaultPagination
+    },
+    mounted () {
+      console.log(this.$options.name)
     }
   }
 </script>

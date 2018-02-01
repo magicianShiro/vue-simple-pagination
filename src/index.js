@@ -1,3 +1,5 @@
+import '@/assets/css/main.css'
+import '@/assets/css/iconfont.css'
 import Pagination from './pagination/Pagination.vue'
 
 export default {

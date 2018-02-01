@@ -1,27 +1,30 @@
-html,body,div,p,ul,li,span {
+.ms-pagination div,
+.ms-pagination p,
+.ms-pagination ul,
+.ms-pagination li,
+.ms-pagination span {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-ul, li {
+.ms-pagination ul,
+.ms-pagination li {
   list-style: none;
 }
-a {
+.ms-pagination a {
   text-decoration: none;
 }
-
-/* 浮动以及清除浮动 */
-  .lf {
-    float: left;
-  }
-  .rf {
-    float: right;
-  }
-  .clearfix:after{
-    content: '';
-    display: block;
-    clear: both;
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
-  }
+.ms-pagination .lf {
+  float: left;
+}
+.ms-pagination .rf {
+  float: right;
+}
+.ms-pagination .clearfix:after {
+  content: '';
+  display: block;
+  clear: both;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}

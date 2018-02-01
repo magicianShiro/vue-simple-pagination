@@ -44,9 +44,6 @@
     data () {
       return {
         currentPage: this.page,
-        // pageSizeList: {
-        //   height: this.visiblePages * 30 + 7 +'px'
-        // },
         isSelected: false,
         hover: 0
       }
