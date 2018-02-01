@@ -2,7 +2,7 @@
 	<ms-pagination
 		theme="default"
 		:page="3"
-		:totalPage="100"
+		:totalPage="18"
 		:fast="true"
 		:basePage="5"
 		:visiblePages="10"

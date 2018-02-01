@@ -109,9 +109,11 @@
     },
     computed: {
       visiblePageArr () {
-        let start = this.currentPage - this.basePage <= 0 ? 0 : this.currentPage - this.basePage
-        start = start + this.visiblePages > this._totalPage ? this._totalPage - this.visiblePages : start
-        let end = start + this.visiblePages > this._totalPage ? this._totalPage : start + this.visiblePages
+        let visiblePages = this.visiblePages > this._totalPage ? this._totalPage : this.visiblePages
+        let basePage = this.basePage > visiblePages ?  visiblePages : this.basePage
+        let start = this.currentPage - basePage <= 0 ? 0 : this.currentPage - basePage
+        start = start + visiblePages > this._totalPage ? this._totalPage - visiblePages : start
+        let end = start + visiblePages
         let arr = []
         let newArr = []
         for(let i=0; i<this._totalPage; i++){
@@ -120,8 +122,8 @@
         newArr = arr.slice(start, end)
 
         if(end !== this._totalPage && this.fast){
-          newArr.splice(this.visiblePages, 0, "right")
-          newArr.splice(this.visiblePages+1, 0 , this._totalPage)
+          newArr.splice(visiblePages, 0, "right")
+          newArr.splice(visiblePages + 1, 0 , this._totalPage)
         }
         if(start > 0 && this.fast){
           newArr.splice(0, 0, 'left')

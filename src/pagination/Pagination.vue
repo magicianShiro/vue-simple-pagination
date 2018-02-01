@@ -25,9 +25,12 @@
 </template>
 
 <script>
+  import '@/assets/css/main.css'
+  import '@/assets/css/iconfont.css'
   import SelectPagination from './SelectPagination.vue'
   import DefaultPagination from './DefaultPagination.vue'
   export default {
+    name: 'Pagination',
     props: {
       theme: {
         type: String,
@@ -84,18 +87,10 @@
       current_change (currentPage) {
         this.$emit('current-change', currentPage)
       },
-      // btnTextOption () {
-      //   return {
-      //     first: 'First',
-      //     previous: 'Previous',
-      //     next: 'Next',
-      //     last: 'Last'
-      //   }
-      // }
     },
     components: {
       'ms-selectPagination': SelectPagination,
       'ms-defaultPagination': DefaultPagination
-    },
+    }
   }
 </script>

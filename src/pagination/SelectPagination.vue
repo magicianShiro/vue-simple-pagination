@@ -4,7 +4,7 @@
       <input
         :disabled="1 === currentPage"
         type="button"
-        class="btn prev lf"
+        class="btn prevBtn lf"
         @click="select_prevPage" value="上一页"></input>
       <div
         id="drap"
@@ -32,7 +32,7 @@
       <input
         :disabled="_totalPage === currentPage"
         type="button"
-        class="btn next lf"
+        class="btn nextBtn lf"
         @click="select_nextPage" value="下一页">
     </div>
   </div>
@@ -44,9 +44,9 @@
     data () {
       return {
         currentPage: this.page,
-        pageSizeList: {
-          height: this.visiblePages*30 + 7 +'px'
-        },
+        // pageSizeList: {
+        //   height: this.visiblePages * 30 + 7 +'px'
+        // },
         isSelected: false,
         hover: 0
       }
@@ -77,6 +77,12 @@
       }
     },
     computed: {
+      pageSizeList () {
+        let visiblePages = this.visiblePages > this._totalPage ? this._totalPage : this.visiblePages
+        return {
+          height: visiblePages * 30 + 7 +'px'
+        }
+      },
       visiblePageArr () {
         let arr =[]
         for(let i=0; i<this._totalPage; i++){
@@ -92,19 +98,6 @@
         else
           throw new Error('参数不正确')
       },
-    },
-    mounted () {
-      let doc = document.documentElement || document.body
-      let drap = document.getElementById('drap')
-
-      doc.onclick = () => {
-        this.isSelected=false
-      }
-      drap.ondragstart = function(e){
-        return false;
-      }
-      drap.onclick = e => e.stopPropagation()
-
     }
   }
 </script>
@@ -150,6 +143,7 @@
         text-indent: 15px;
         color: #333;
         box-sizing: border-box;
+        cursor: pointer;
       }
       // icon样式
       i {
@@ -179,6 +173,7 @@
           padding-left: 10px;
           text-align: left;
           cursor: pointer;
+          user-select: none;
           &.hover {
             background-color: #e4e8f1;
           }
