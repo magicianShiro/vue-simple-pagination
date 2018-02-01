@@ -21,21 +21,21 @@
         @mouseleave="rightArrow=leftArrow=true"
         @click="changePage(pageItem)">
         {{pageItem}}</li>
-      <li 
-        class="lf" 
+      <li
+        class="lf"
         v-else-if="pageItem === 'right'"
         @mouseenter="rightArrow=!rightArrow"
         @mouseleave="rightArrow=!rightArrow"
         @click="fastForward">
-          <i 
+          <i
             class="iconfont"
             :class="[
             {'icon-more': rightArrow},
             {'icon-arrow-right': !rightArrow}
           ]"></i>
       </li>
-      <li 
-        class="lf" 
+      <li
+        class="lf"
         v-else-if="pageItem === 'left'"
         @mouseenter="leftArrow=!leftArrow"
         @mouseleave="leftArrow=!leftArrow"
@@ -109,19 +109,21 @@
     },
     computed: {
       visiblePageArr () {
-        let start = this.currentPage - this.basePage <= 0 ? 0 : this.currentPage - this.basePage
-        start = start + this.visiblePages > this._totalPage ? this._totalPage - this.visiblePages : start
-        let end = start + this.visiblePages > this._totalPage ? this._totalPage : start + this.visiblePages
+        let visiblePages = this.visiblePages > this._totalPage ? this._totalPage : this.visiblePages
+        let basePage = this.basePage > visiblePages ?  visiblePages : this.basePage
+        let start = this.currentPage - basePage <= 0 ? 0 : this.currentPage - basePage
+        start = start + visiblePages > this._totalPage ? this._totalPage - visiblePages : start
+        let end = start + visiblePages
         let arr = []
         let newArr = []
         for(let i=0; i<this._totalPage; i++){
           arr.push(i+1)
         }
         newArr = arr.slice(start, end)
-        
+
         if(end !== this._totalPage && this.fast){
-          newArr.splice(this.visiblePages, 0, "right")
-          newArr.splice(this.visiblePages+1, 0 , this._totalPage)
+          newArr.splice(visiblePages, 0, "right")
+          newArr.splice(visiblePages + 1, 0 , this._totalPage)
         }
         if(start > 0 && this.fast){
           newArr.splice(0, 0, 'left')
@@ -134,7 +136,7 @@
           return Math.ceil(this.pageCount / this.pageSize)
         else if (this.totalPage)
           return this.totalPage
-        else 
+        else
           throw new Error('参数不正确')
       },
       _btnText () {

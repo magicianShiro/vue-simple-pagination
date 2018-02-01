@@ -1,7 +1,7 @@
 <template>
-
   <ms-selectPagination
     v-if="theme==='select'"
+    class="ms-pagination"
     :page="page"
     :totalPage="totalPage"
     :pageSize="pageSize"
@@ -11,6 +11,7 @@
   </ms-selectPagination>
   <ms-defaultPagination
     v-else-if="theme==='default'"
+    class="ms-pagination"
     :page="page"
     :basePage="basePage"
     :totalPage="totalPage"
@@ -28,6 +29,7 @@
   import SelectPagination from './SelectPagination.vue'
   import DefaultPagination from './DefaultPagination.vue'
   export default {
+    name: 'ms-pagination',
     props: {
       theme: {
         type: String,
@@ -84,18 +86,13 @@
       current_change (currentPage) {
         this.$emit('current-change', currentPage)
       },
-      // btnTextOption () {
-      //   return {
-      //     first: 'First',
-      //     previous: 'Previous',
-      //     next: 'Next',
-      //     last: 'Last'
-      //   }
-      // }
     },
     components: {
       'ms-selectPagination': SelectPagination,
       'ms-defaultPagination': DefaultPagination
     },
+    mounted () {
+      console.log(this.$options.name)
+    }
   }
 </script>
