@@ -1,4 +1,5 @@
 const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
 	entry: './src/index.js',
@@ -25,15 +26,23 @@ module.exports = {
 			},
 			{
 				test: /\.less$/,
-				loader: 'less-loder'
+				use:[{
+					loader: 'style-loader'
+				}, {
+					loader: 'css-loader'
+				}, {
+					loader: 'less-loader'
+				}]
 			},
 			{
 				test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
 				loader: 'url-loader'
-		
 			}
 		],
 	},
+	plugins: [
+		new VueLoaderPlugin()
+	],
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, '../src')

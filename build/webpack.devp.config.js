@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 const webpack = require('webpack')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
 	entry: {
@@ -30,7 +30,13 @@ module.exports = {
       },
 			{
 				test: /\.less$/,
-				use: ['less-loader']
+				use:[{
+					loader: 'style-loader'
+				}, {
+					loader: 'css-loader'
+				}, {
+					loader: 'less-loader'
+				}]
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -50,17 +56,27 @@ module.exports = {
 	},
 	// 插件
 	plugins: [
+		new VueLoaderPlugin(),
 		new webpack.HashedModuleIdsPlugin(),
 		new HtmlWebpackPlugin({
 			template: path.resolve(__dirname, '../examples/template/index.html'),
-			chunks: ['vendor', 'main']
-		}),
-		new webpack.optimize.CommonsChunkPlugin({
-			names: ['vendor'],
-			minChunks: Infinity
-		}),
-		new InlineManifestWebpackPlugin({
-			name: 'webpackManifest'
+			chunks: ['webpackManifest', 'vendor', 'main']
 		})
-	]
+	],
+	optimization: {
+		// webpack4中InlineManifestWebpackPlugin插件的使用方式
+		runtimeChunk: { 
+			name: 'webpackManifest'
+		},
+		splitChunks: {
+			chunks: 'all',
+			cacheGroups: {
+				vendor: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendor',
+					minChunks: 1
+				}
+			}
+		}
+	}
 }
