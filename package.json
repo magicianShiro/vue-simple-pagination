@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack -p --config ./build/webpack.prod.config.js",
+    "build:docs": "webpack -p --config ./build/webpack.devp.config.js",
     "dev": "webpack-dev-server --content-base docs --config ./build/webpack.devp.config.js --hot --port 9000 --inline --mode development",
     "test": "jest --config test/jest.conf.js --coverage"
   },

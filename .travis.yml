@@ -1,0 +1,14 @@
+
+language: node_js
+node_js:
+  - "8.11.1"
+script: npm run build:docs
+after_script:
+  - cd dist
+  - git init
+  - git config user.name "magicianShiro"
+  - git config user.email "navi@movom.cc"
+  - git add -A
+  - git commit -m "deploy"
+  - git push --force "https://${GITHUB_TOKEN}@github.com/magicianShiro/ms-vue-simple-pagination.git" master:gh-pages
+  
