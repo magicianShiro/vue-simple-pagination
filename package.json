@@ -1,6 +1,6 @@
 {
   "name": "ms-vue-simple-pagination",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "a simple pagination for vue",
   "main": "index.js",
   "scripts": {
@@ -9,13 +9,18 @@
     "dev": "webpack-dev-server --content-base docs --config ./build/webpack.devp.config.js --hot --port 9000 --inline --mode development",
     "test": "jest --config test/jest.conf.js --coverage"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magicianShiro/vue-simple-pagination.git"
+  },
   "keywords": [
     "simple",
     "pagination",
     "vue",
     "vue-pagination"
   ],
-  "author": "magicianShiro",
+  "homepage": "https://github.com/magicianShiro/vue-simple-pagination#readme",
+  "author": "magicianShiro <navi@movom.cc>",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
